@@ -1,4 +1,4 @@
-import { Flex, Button, Stack } from '@chakra-ui/react'
+import { Flex, Button, VStack } from '@chakra-ui/react'
 import { FormInput } from '../components/Form/FormInput'
 
 export default function SignIn() {
@@ -18,10 +18,10 @@ export default function SignIn() {
         borderRadius={8}
         flexDir="column"
       >
-        <Stack spacing="4">
+        <VStack spacing="4">
             <FormInput name="email" label="E-mail" type="email" />
             <FormInput name="password" label="Senha" type="password" />
-        </Stack>
+        </VStack>
 
         <Button type="submit" mt="6" colorScheme="pink" size="lg">Entrar</Button>
       </Flex>
