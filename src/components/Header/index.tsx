@@ -34,7 +34,8 @@ export function Header() {
                     variant="unstyled"
                     onClick={onOpen}
                     mr="2"
-
+                    display="flex"
+                    alignItems="center"
                 ></IconButton>
             ) }
             
