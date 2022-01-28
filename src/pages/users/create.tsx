@@ -2,6 +2,7 @@ import { Box, Flex, Heading, Divider, VStack, HStack, SimpleGrid, Button } from 
 import { FormInput } from "../../components/Form/FormInput";
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
+import Link from 'next/link'
 
 export default function CreateUser() {
     return (
@@ -30,8 +31,10 @@ export default function CreateUser() {
 
                     <Flex mt="8" justify="flex-end">
                         <HStack spacing="4" >
+                        <Link href="/users" as="a">
                             <Button colorScheme="whiteAlpha">Cancelar</Button>
-                            <Button colorScheme="pink">Salvar</Button>
+                        </Link>
+                        <Button colorScheme="pink">Salvar</Button>
 
                         </HStack>
 
