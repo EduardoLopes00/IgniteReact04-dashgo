@@ -5,8 +5,8 @@ import { ElementType } from 'react'
 
 interface NavLinkProps extends ChakraLinkProps {
     icon: ElementType;
-    children: string
-    href: string
+    children: string;
+    href: string;
 }
 
 export function NavLink( { icon, children, href, ...rest }: NavLinkProps ) {
@@ -18,4 +18,4 @@ export function NavLink( { icon, children, href, ...rest }: NavLinkProps ) {
             </ChakraLink>
         </ActiveLink>
     )
-}
+}   
