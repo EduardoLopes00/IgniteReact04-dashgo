@@ -7,6 +7,13 @@ import Link from 'next/link'
 import { useEffect } from "react";
 import { useQuery } from "react-query";
 
+type User = {
+    id: string;
+    name: string;
+    email: string;
+    createdAt: string;
+}
+
 export default function UserList() {
     const isWideVersion = useBreakpointValue({
         base: false,
@@ -14,20 +21,40 @@ export default function UserList() {
     })
 
     const query = useQuery('users', async () => {
-        const response = await fetch('http://localhost:3000/api/users')
+        const response = await fetch('http://localhost:3000/fakeApi/users')
         const data = await response.json()
 
-        return data;
+        const users: User[] = data.users.map((user) => {
+            return {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                createdAt: new Date(user.createdAt).toLocaleDateString('pt-Br', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric'
+                })
+            }
+            
+        });
+
+        return users;
     })
 
     console.log(query);
 
-    useEffect(() => {
-        fetch('https://localhost:3000/apiFake/users').then(response => response.json())
-                                                 .then(data => data)
-    }, [])
-    
     const { data, isLoading, error } = query;   
+
+    const teste = data?.map(user => {
+        return {
+            id: user.id,
+            name2: user.name,
+            email2: user.email,
+            createdAt2: user.createdAt
+        }
+
+
+    })
 
     return (
         <Box>
@@ -56,64 +83,67 @@ export default function UserList() {
                     </Flex>
 
                     
+                    {   isLoading ? (
+                        <Flex justify="center">
+                            <Spinner />
+                        </Flex>
+                    ) : error ? (
+                        <Flex justify="center">
+                            <Text>Falha ao obter os usuários!</Text>
+                        </Flex>
+                    ) : (
+                        <>
+                            <Table colorScheme="whiteAlpha" >
+                                <Thead>
+                                    <Tr>
+                                        <Th px= {["4", "4", "6"]} color="gray.300" width="8"> 
+                                            <Checkbox colorScheme="pink" />
+                                        </Th>
+                                        <Th>Usuário</Th>
+                                        { isWideVersion && <Th>Data de cadastro</Th> }
+                                        <Th></Th>
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                    {data.map(user => {
+                                        return (
+                                            <Tr key={user.id}>
+                                                <Td px= {["4", "4", "6"]}>
+                                                    <Checkbox colorScheme="pink" />
+                                                </Td>
+                                                <Td>
+                                                    <Box>
+                                                        <Text fontWeight="bold">{user.name}</Text>
+                                                        <Text fontSize="sm" color="gray.300">{user.email}</Text>
+
+                                                    </Box>
+                                                </Td>
+                                                { isWideVersion && <Td>{user.createdAt}</Td> }
+                                                <Td>
+                                                    {isWideVersion && 
+                                                        <Button
+                                                            as="a"
+                                                            size="sm"
+                                                            fontSize="sm"
+                                                            colorScheme="pink"
+                                                            leftIcon={<Icon as={RiPencilLine} fontSize="18"/>}
+                                                        >  
+                                                            Editar
+                                                        </Button> 
+                                                    }
+                                                </Td>
+                                            </Tr>
+                                        )
+                                    }) }
+                                </Tbody>
+                            </Table>
+
+                            <Pagination />
+                        </>
+                    )}
 
                 </Box> 
                 
-                {   isLoading ? (
-                    <Flex justify="center">
-                        <Spinner />
-                    </Flex>
-                ) : error ? (
-                    <Flex justify="center">
-                        <Text>Falha ao obter os usuários!</Text>
-                    </Flex>
-                ) : (
-                    <>
-                        <Table colorScheme="whiteAlpha" >
-                            <Thead>
-                                <Tr>
-                                    <Th px= {["4", "4", "6"]} color="gray.300" width="8"> 
-                                        <Checkbox colorScheme="pink" />
-                                    </Th>
-                                    <Th>Usuário</Th>
-                                    { isWideVersion && <Th>Data de cadastro</Th> }
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                <Tr>
-                                    <Td px= {["4", "4", "6"]}>
-                                        <Checkbox colorScheme="pink" />
-                                    </Td>
-                                    <Td>
-                                        <Box>
-                                            <Text fontWeight="bold">Eduardo Lopes</Text>
-                                            <Text fontSize="sm" color="gray.300">eduardo.toworkstudy@gmail.com</Text>
-
-                                        </Box>
-                                    </Td>
-                                    { isWideVersion && <Td>  26 de janeiro de 2021</Td> }
-                                    <Td>
-                                        {isWideVersion && 
-                                            <Button
-                                                as="a"
-                                                size="sm"
-                                                fontSize="sm"
-                                                colorScheme="pink"
-                                                leftIcon={<Icon as={RiPencilLine} fontSize="18"/>}
-                                            >  
-                                                Editar
-                                            </Button> 
-                                        }
-                                    </Td>
-                                </Tr>
-                            </Tbody>
-                        </Table>
-
-                        <Pagination />
-                    </>
-                )
-
-                }
             </Flex>
         </Box>
     )
