@@ -1,3 +1,5 @@
+
+
 import { createServer, Factory, Model } from 'miragejs'
 import faker from 'faker'
 
@@ -29,16 +31,17 @@ export function makeServer() {
         },
 
         seeds(server) {
-            server.createList('user', 200); //It will create 200 users based on the factory defined above.
+            server.createList('user', 10); //It will create  users based on the factory defined above.
         },
 
         routes() {
-            this.namespace = 'apiFake'
+            this.namespace = 'fakeApi'
             this.timing = 750;
         
-            this.get('/users')
-            this.post('/users')
+            this.get('users')
+            this.post('users')
 
+            this.passthrough()
         }
     })
 
