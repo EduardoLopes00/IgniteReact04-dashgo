@@ -4,16 +4,8 @@ import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 import Link from 'next/link'
-import { useEffect } from "react";
-import { useQuery } from "react-query";
-import { api } from "../../services/api";
+import { useUsers } from "../../services/hooks/useUsers";
 
-type User = {
-    id: string;
-    name: string;
-    email: string;
-    createdAt: string;
-}
 
 export default function UserList() {
     const isWideVersion = useBreakpointValue({
@@ -21,37 +13,7 @@ export default function UserList() {
         lg: true
     })
 
-    const { data, isLoading, isFetching, error } = useQuery('users', async () => {
-        const { data } = await api.get('http://localhost:3000/api/users')
-       
-
-        const users: User[] = data.users.map((user) => {
-            return {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                createdAt: new Date(user.createdAt).toLocaleDateString('pt-Br', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
-                })
-            }
-            
-        });
-
-        return users;
-    })   
-
-    const teste = data?.map(user => {
-        return {
-            id: user.id,
-            name2: user.name,
-            email2: user.email,
-            createdAt2: user.createdAt
-        }
-
-
-    })
+    const { data, isLoading, isFetching, error } = useUsers()
 
     return (
         <Box>
