@@ -35,11 +35,13 @@ export function makeServer() {
         },
 
         routes() {
-            this.namespace = 'fakeApi'
+            this.namespace = 'api'
             this.timing = 750;
         
-            this.get('users')
-            this.post('users')
+            this.get('/users')
+            this.post('/users')
+
+            this.namespace = ''
 
             this.passthrough()
         }

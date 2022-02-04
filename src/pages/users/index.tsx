@@ -21,7 +21,7 @@ export default function UserList() {
     })
 
     const query = useQuery('users', async () => {
-        const response = await fetch('http://localhost:3000/fakeApi/users')
+        const response = await fetch('http://localhost:3000/api/users')
         const data = await response.json()
 
         const users: User[] = data.users.map((user) => {
