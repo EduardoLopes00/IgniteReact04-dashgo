@@ -8,8 +8,19 @@ type User = {
     createdAt: string;
 }
 
-export async function getUsers(): Promise<User[]>{
-    const { data } = await api.get('http://localhost:3000/api/users')
+type UseUsersResponse = {
+    totalCount: number;
+    users: User[];
+}
+
+export async function getUsers(page: number): Promise<UseUsersResponse>{
+    const { data, headers } = await api.get('http://localhost:3000/api/users', {
+        params: {
+            page
+        }
+    })
+
+    const totalCount = Number(headers['x-total-content']) //The total of registers returned from the above request
             
     
     const users: User[] = data.users.map((user) => {
@@ -25,12 +36,15 @@ export async function getUsers(): Promise<User[]>{
         }   
     });
     
-    return users;
+    return {
+        users,
+        totalCount
+    };
 }
 
-export function useUsers() {
+export function useUsers(page: number) {
     return (
-        useQuery('users', getUsers, {
+        useQuery(['users', page], () => getUsers(page), {
             staleTime: 1000 * 5 //5 seconds
         })   
     )
