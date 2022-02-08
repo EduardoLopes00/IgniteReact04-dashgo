@@ -72,5 +72,3 @@ export function makeServer() {
 
     return server;
 }
-
-//teste
